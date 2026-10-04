@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f7f5">
-  <meta name="description" content="Practice trigonometric identities and study essential Laplace transforms.">
+  <meta name="description" content="Practice trigonometric identities and solve Laplace transform problems.">
   <title>Identity Practice | Math Flashcards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -393,7 +393,7 @@
 
       <div class="practice-modes" role="group" aria-label="Choose practice deck">
         <button class="mode-button" id="mode-identities" type="button" aria-pressed="true">Identities</button>
-        <button class="mode-button" id="mode-laplace" type="button" aria-pressed="false">Laplace transforms</button>
+        <button class="mode-button" id="mode-laplace" type="button" aria-pressed="false">Laplace problems</button>
       </div>
 
       <section class="card-stage" aria-label="Flashcard">
@@ -436,7 +436,7 @@
         </div>
         <div class="study-tabs" role="tablist" aria-label="Study subjects">
           <button class="study-tab" id="tab-identities" role="tab" type="button" aria-selected="true" aria-controls="study-content">Identities</button>
-          <button class="study-tab" id="tab-laplace" role="tab" type="button" aria-selected="false" aria-controls="study-content" tabindex="-1">Laplace transforms</button>
+          <button class="study-tab" id="tab-laplace" role="tab" type="button" aria-selected="false" aria-controls="study-content" tabindex="-1">Laplace problems</button>
         </div>
       </header>
       <div class="study-content" id="study-content" role="tabpanel" aria-labelledby="tab-identities" tabindex="0"></div>
@@ -575,43 +575,36 @@
     identities.push(...newIdentities);
 
     const laplaceIdentities = [
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{1\}`, answer: String.raw`\frac{1}{s}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{t^n\},\quad n \in \mathbb{N}_0`, answer: String.raw`\frac{n!}{s^{n + 1}}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{e^{at}\}`, answer: String.raw`\frac{1}{s - a}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{\sin(bt)\}`, answer: String.raw`\frac{b}{s^2 + b^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{\cos(bt)\}`, answer: String.raw`\frac{s}{s^2 + b^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{\sinh(bt)\}`, answer: String.raw`\frac{b}{s^2 - b^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{\cosh(bt)\}`, answer: String.raw`\frac{s}{s^2 - b^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{e^{at}\sin(bt)\}`, answer: String.raw`\frac{b}{(s - a)^2 + b^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{e^{at}\cos(bt)\}`, answer: String.raw`\frac{s - a}{(s - a)^2 + b^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{t\sin(bt)\}`, answer: String.raw`\frac{2bs}{(s^2 + b^2)^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{t\cos(bt)\}`, answer: String.raw`\frac{s^2 - b^2}{(s^2 + b^2)^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{\sqrt{t}\}`, answer: String.raw`\frac{\sqrt{\pi}}{2s^{3/2}}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{u(t - a)\}`, answer: String.raw`\frac{e^{-as}}{s}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{(t - a)u(t - a)\}`, answer: String.raw`\frac{e^{-as}}{s^2}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{\delta(t - a)\}`, answer: String.raw`e^{-as}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}\{t^n e^{at}\},\quad n \in \mathbb{N}_0`, answer: String.raw`\frac{n!}{(s - a)^{n + 1}}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{1}{s}\right\}`, answer: String.raw`1` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{1}{s - a}\right\}`, answer: String.raw`e^{at}` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{s}{s^2 + b^2}\right\}`, answer: String.raw`\cos(bt)` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{b}{s^2 + b^2}\right\}`, answer: String.raw`\sin(bt)` },
-      { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{1}{s^{n + 1}}\right\},\quad n \in \mathbb{N}_0`, answer: String.raw`\frac{t^n}{n!}` },
-
-      { category: "Transform properties", name: "Linearity", question: String.raw`\mathcal{L}\{af(t) + bg(t)\}`, answer: String.raw`aF(s) + bG(s)` },
-      { category: "Transform properties", name: "First shifting theorem (s-shifting)", question: String.raw`\mathcal{L}\{e^{at}f(t)\}`, answer: String.raw`F(s - a)` },
-      { category: "Transform properties", name: "Second shifting theorem (Heaviside time shift)", question: String.raw`\mathcal{L}\{u(t - a)f(t - a)\}`, answer: String.raw`e^{-as}F(s)` },
-      { category: "Transform properties", name: "Scaling property", question: String.raw`\mathcal{L}\{f(at)\},\quad a > 0`, answer: String.raw`\frac{1}{a}F\left(\frac{s}{a}\right)` },
-      { category: "Transform properties", name: "First derivative theorem", question: String.raw`\mathcal{L}\{f'(t)\}`, answer: String.raw`sF(s) - f(0)` },
-      { category: "Transform properties", name: "Second derivative theorem", question: String.raw`\mathcal{L}\{f''(t)\}`, answer: String.raw`s^2F(s) - sf(0) - f'(0)` },
-      { category: "Transform properties", name: "Nth derivative theorem", question: String.raw`\mathcal{L}\{f^{(n)}(t)\}`, answer: String.raw`s^nF(s) - \sum_{k=0}^{n-1}s^{n-1-k}f^{(k)}(0)` },
-      { category: "Transform properties", name: "Integral in time", question: String.raw`\mathcal{L}\left\{\int_0^t f(\tau)\,d\tau\right\}`, answer: String.raw`\frac{F(s)}{s}` },
-      { category: "Transform properties", name: "Multiplication by t", question: String.raw`\mathcal{L}\{tf(t)\}`, answer: String.raw`-F'(s)` },
-      { category: "Transform properties", name: "Multiplication by t to the nth power", question: String.raw`\mathcal{L}\{t^n f(t)\}`, answer: String.raw`(-1)^nF^{(n)}(s)` },
-      { category: "Transform properties", name: "Division by t", question: String.raw`\mathcal{L}\left\{\frac{f(t)}{t}\right\},\quad f(0^+)=0`, answer: String.raw`\int_s^\infty F(\sigma)\,d\sigma` },
-      { category: "Transform properties", name: "Convolution theorem", question: String.raw`\mathcal{L}\{(f * g)(t)\}`, answer: String.raw`F(s)G(s)` },
-      { category: "Transform properties", name: "Periodic function theorem", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t+T)=f(t)`, answer: String.raw`\frac{\int_0^T e^{-st}f(t)\,dt}{1 - e^{-sT}}` },
-      { category: "Transform properties", name: "Initial value theorem", question: String.raw`f(0^+)`, answer: String.raw`\lim_{s\to\infty}sF(s)` },
-      { category: "Transform properties", name: "Final value theorem", question: String.raw`\lim_{t\to\infty}f(t)`, answer: String.raw`\lim_{s\to 0}sF(s)` }
+      { category: "Basic functions", name: "Problem 01 · Constant", question: String.raw`f(t)=1`, answer: String.raw`F(s)=\frac{1}{s}` },
+      { category: "Basic functions", name: "Problem 02 · Linear function", question: String.raw`f(t)=t`, answer: String.raw`F(s)=\frac{1}{s^2}` },
+      { category: "Basic functions", name: "Problem 03 · Power rule", question: String.raw`f(t)=t^4`, answer: String.raw`F(s)=\frac{24}{s^5}` },
+      { category: "Basic functions", name: "Problem 04 · Linearity", question: String.raw`f(t)=2t^3-5t+7`, answer: String.raw`F(s)=\frac{12}{s^4}-\frac{5}{s^2}+\frac{7}{s}` },
+      { category: "Basic functions", name: "Problem 05 · Exponential", question: String.raw`f(t)=e^{3t}`, answer: String.raw`F(s)=\frac{1}{s-3}` },
+      { category: "Basic functions", name: "Problem 06 · Decaying exponential", question: String.raw`f(t)=e^{-2t}`, answer: String.raw`F(s)=\frac{1}{s+2}` },
+      { category: "Basic functions", name: "Problem 07 · Sine", question: String.raw`f(t)=\sin(4t)`, answer: String.raw`F(s)=\frac{4}{s^2+16}` },
+      { category: "Basic functions", name: "Problem 08 · Cosine", question: String.raw`f(t)=\cos(5t)`, answer: String.raw`F(s)=\frac{s}{s^2+25}` },
+      { category: "Basic functions", name: "Problem 09 · Hyperbolic sine", question: String.raw`f(t)=\sinh(3t)`, answer: String.raw`F(s)=\frac{3}{s^2-9}` },
+      { category: "Basic functions", name: "Problem 10 · Hyperbolic cosine", question: String.raw`f(t)=\cosh(2t)`, answer: String.raw`F(s)=\frac{s}{s^2-4}` },
+      { category: "Shifts and products", name: "Problem 11 · Exponential times sine", question: String.raw`f(t)=e^{2t}\sin(3t)`, answer: String.raw`F(s)=\frac{3}{(s-2)^2+9}` },
+      { category: "Shifts and products", name: "Problem 12 · Exponential times cosine", question: String.raw`f(t)=e^{-t}\cos(4t)`, answer: String.raw`F(s)=\frac{s+1}{(s+1)^2+16}` },
+      { category: "Shifts and products", name: "Problem 13 · Time times sine", question: String.raw`f(t)=t\sin(2t)`, answer: String.raw`F(s)=\frac{4s}{(s^2+4)^2}` },
+      { category: "Shifts and products", name: "Problem 14 · Time times cosine", question: String.raw`f(t)=t\cos(3t)`, answer: String.raw`F(s)=\frac{s^2-9}{(s^2+9)^2}` },
+      { category: "Shifts and products", name: "Problem 15 · Shifted power", question: String.raw`f(t)=t^2e^{-2t}`, answer: String.raw`F(s)=\frac{2}{(s+2)^3}` },
+      { category: "Shifts and products", name: "Problem 16 · Fractional power", question: String.raw`f(t)=\sqrt{t}`, answer: String.raw`F(s)=\frac{\sqrt{\pi}}{2s^{3/2}}` },
+      { category: "Shifts and products", name: "Problem 17 · Division by time", question: String.raw`f(t)=\frac{\sin(4t)}{t}`, answer: String.raw`F(s)=\arctan\left(\frac{4}{s}\right)` },
+      { category: "Step and impulse functions", name: "Problem 18 · Delayed unit step", question: String.raw`f(t)=u(t-2)`, answer: String.raw`F(s)=\frac{e^{-2s}}{s}` },
+      { category: "Step and impulse functions", name: "Problem 19 · Delayed ramp", question: String.raw`f(t)=(t-2)u(t-2)`, answer: String.raw`F(s)=\frac{e^{-2s}}{s^2}` },
+      { category: "Step and impulse functions", name: "Problem 20 · Delayed sine", question: String.raw`f(t)=u(t-1)\sin(3(t-1))`, answer: String.raw`F(s)=\frac{3e^{-s}}{s^2+9}` },
+      { category: "Step and impulse functions", name: "Problem 21 · Rectangular pulse", question: String.raw`f(t)=u(t)-u(t-3)`, answer: String.raw`F(s)=\frac{1-e^{-3s}}{s}` },
+      { category: "Step and impulse functions", name: "Problem 22 · Shifted impulse", question: String.raw`f(t)=\delta(t-4)`, answer: String.raw`F(s)=e^{-4s}` },
+      { category: "Combined functions", name: "Problem 23 · Linearity with cosine", question: String.raw`f(t)=4e^t-3\cos(2t)`, answer: String.raw`F(s)=\frac{4}{s-1}-\frac{3s}{s^2+4}` },
+      { category: "Combined functions", name: "Problem 24 · Polynomial and exponential", question: String.raw`f(t)=t^2+e^{2t}`, answer: String.raw`F(s)=\frac{2}{s^3}+\frac{1}{s-2}` },
+      { category: "Combined functions", name: "Problem 25 · Shift and linearity", question: String.raw`f(t)=e^t\sin(2t)+\cos(t)`, answer: String.raw`F(s)=\frac{2}{(s-1)^2+4}+\frac{s}{s^2+1}` },
+      { category: "Combined functions", name: "Problem 26 · Integral in time", question: String.raw`f(t)=\int_0^t \tau^2\,d\tau`, answer: String.raw`F(s)=\frac{2}{s^4}` },
+      { category: "Combined functions", name: "Problem 27 · Second derivative", question: String.raw`f(t)=\frac{d^2}{dt^2}\left(e^{2t}\right)`, answer: String.raw`F(s)=\frac{4}{s-2}` },
+      { category: "Combined functions", name: "Problem 28 · First derivative", question: String.raw`f(t)=\frac{d}{dt}\left(t^2+3t\right)`, answer: String.raw`F(s)=\frac{2}{s^2}+\frac{3}{s}` },
+      { category: "Periodic functions", name: "Problem 29 · Periodic pulse train", question: String.raw`f(t)=\begin{cases}1,&0\le t<1\\0,&1\le t<2\end{cases},\quad f(t+2)=f(t)`, answer: String.raw`F(s)=\frac{1-e^{-s}}{s(1-e^{-2s})}` },
+      { category: "Periodic functions", name: "Problem 30 · Integral of cosine", question: String.raw`f(t)=\int_0^t \cos(3\tau)\,d\tau`, answer: String.raw`F(s)=\frac{1}{s^2+9}` }
     ];
 
     let currentIndex = -1;
@@ -648,16 +641,16 @@
       document.getElementById("card-number").textContent = String(currentIndex + 1).padStart(2, "0");
       document.getElementById("answer-number").textContent = String(currentIndex + 1).padStart(2, "0");
       document.getElementById("round-count").textContent = String(round).padStart(2, "0");
-      document.getElementById("card-kind").textContent = practiceMode === "laplace" ? "TRANSFORM" : "PROMPT";
-      document.getElementById("answer-kind").textContent = practiceMode === "laplace" ? "RESULT" : "IDENTITY";
+      document.getElementById("card-kind").textContent = practiceMode === "laplace" ? "PROBLEM" : "PROMPT";
+      document.getElementById("answer-kind").textContent = practiceMode === "laplace" ? "TRANSFORM" : "IDENTITY";
       const cardName = document.getElementById("card-name");
       cardName.textContent = currentIdentity.name || currentIdentity.category || "";
       cardName.hidden = !cardName.textContent;
       document.getElementById("card-hint").textContent = practiceMode === "laplace"
-        ? "Recall the transform or property, then reveal to check"
+        ? "Find the Laplace transform of this function, then reveal to check"
         : "Work out the right-hand side, then reveal to check";
       document.getElementById("deck-count").textContent = practiceMode === "laplace"
-        ? `${laplaceIdentities.length} LAPLACE CARDS`
+        ? `${laplaceIdentities.length} LAPLACE PROBLEMS`
         : `${identities.length} IDENTITY CARDS`;
       flashcard.classList.remove("is-revealed");
       back.setAttribute("aria-hidden", "true");
@@ -713,7 +706,7 @@
         ];
 
       document.getElementById("study-count").textContent = isLaplace
-        ? `REFERENCE / ${laplaceIdentities.length} TRANSFORMS`
+        ? `WORKSHEET / ${laplaceIdentities.length} PROBLEMS`
         : `REFERENCE / ${identities.length} FORMULAS`;
       studyContent.setAttribute("aria-labelledby", isLaplace ? laplaceTab.id : identityTab.id);
 
