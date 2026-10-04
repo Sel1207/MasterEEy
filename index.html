@@ -83,7 +83,7 @@
       line-height: 1;
     }
 
-    .session-label, .eyebrow, .card-index, .field-label, .round-label {
+    .session-label, .eyebrow, .card-index, .round-label {
       font-family: var(--mono);
       font-size: 10px;
       font-weight: 400;
@@ -92,6 +92,9 @@
     }
 
     .session-label { color: var(--muted); }
+
+    .header-actions { display: flex; align-items: center; gap: 15px; }
+    .study-open { min-height: 38px; padding: 0 12px; font-size: 12px; }
 
     main {
       width: 100%;
@@ -202,6 +205,7 @@
     }
 
     .answer-math .katex-display { margin: 0; }
+    .card-prompt .katex-display { margin: 0; }
     .answer-caption { position: absolute; bottom: 23px; margin: 0; color: var(--muted); font-size: 12px; }
 
     .card-actions {
@@ -241,6 +245,44 @@
 
     .button:disabled { cursor: default; opacity: .7; transform: none; }
 
+    .study-dialog {
+      width: min(820px, calc(100% - 28px));
+      max-width: none;
+      max-height: min(84vh, 840px);
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .study-dialog::backdrop { background: #070908d9; backdrop-filter: blur(4px); }
+    .study-window { max-height: min(84vh, 840px); display: flex; flex-direction: column; }
+
+    .study-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 21px 25px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .study-title { margin: 0; font-family: var(--serif); font-size: 32px; font-weight: 400; line-height: 1; }
+    .study-count { margin: 0 0 7px; color: var(--lime); font-family: var(--mono); font-size: 10px; text-transform: uppercase; }
+    .study-close { min-height: 36px; padding: 0 12px; font-size: 12px; }
+
+    .study-content { overflow-y: auto; padding: 20px 25px 26px; overscroll-behavior: contain; }
+    .study-group + .study-group { margin-top: 21px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .study-group-title { margin: 0 0 7px; color: var(--lime); font-family: var(--mono); font-size: 10px; font-weight: 400; text-transform: uppercase; }
+    .study-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 25px; margin: 0; padding: 0; list-style: none; }
+    .study-item { min-width: 0; padding: 12px 0; overflow-x: auto; border-bottom: 1px solid #30393499; }
+    .study-equation { display: flex; align-items: baseline; gap: 7px; min-width: max-content; font-size: 15px; line-height: 1.6; }
+    .study-equals { color: var(--lime); }
+    .study-prompt { margin: 0 0 7px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .study-answer { color: var(--lime); font-size: 15px; }
+
     footer {
       min-height: 58px;
       display: flex;
@@ -265,11 +307,17 @@
       .app-shell { width: min(100% - 32px, 480px); }
       .topbar { min-height: 66px; }
       .session-label { font-size: 9px; }
+      .header-actions { gap: 0; }
+      .header-actions .session-label { display: none; }
+      .study-open { min-height: 36px; padding: 0 10px; }
       main { padding: 39px 0 32px; }
       .intro { align-items: start; flex-direction: column; gap: 13px; margin-bottom: 18px; }
       .card-stage { height: 300px; }
       .card-face { padding: 30px 22px; }
       .card-actions { margin-top: 17px; }
+      .study-header { padding: 17px 18px; }
+      .study-content { padding: 15px 18px 20px; }
+      .study-list { grid-template-columns: 1fr; }
       footer { min-height: 52px; font-size: 9px; }
     }
 
@@ -289,7 +337,10 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="wordmark"><span class="wordmark-mark" aria-hidden="true">&#8721;</span><span>Math, by memory</span></div>
-      <span class="session-label">TRIGONOMETRY / SET 01</span>
+      <div class="header-actions">
+        <span class="session-label">TRIG / CALCULUS / SET 01</span>
+        <button class="button button-secondary study-open" id="study-open" type="button">Study sheet</button>
+      </div>
     </header>
 
     <main>
@@ -306,7 +357,7 @@
           <article class="card-face card-front" aria-live="polite">
             <span class="card-index">PROMPT / <span id="card-number">01</span></span>
             <p class="card-prompt" id="question"></p>
-            <p class="card-hint">Recall the identity, then check your answer</p>
+            <p class="card-hint">Work out the right-hand side, then reveal to check</p>
           </article>
           <article class="card-face card-back" aria-live="polite" aria-hidden="true">
             <span class="card-index">IDENTITY / <span id="answer-number">01</span></span>
@@ -323,10 +374,23 @@
     </main>
 
     <footer>
-      <span><i class="footer-dot" aria-hidden="true"></i>EIGHT IDENTITIES</span>
+      <span><i class="footer-dot" aria-hidden="true"></i>58 IDENTITIES</span>
       <span>ONE CARD AT A TIME</span>
     </footer>
   </div>
+
+  <dialog class="study-dialog" id="study-dialog" aria-labelledby="study-title">
+    <div class="study-window">
+      <header class="study-header">
+        <div>
+          <p class="study-count">REFERENCE / 58 FORMULAS</p>
+          <h2 class="study-title" id="study-title">Study sheet</h2>
+        </div>
+        <button class="button button-secondary study-close" id="study-close" type="button">Close</button>
+      </header>
+      <div class="study-content" id="study-content"></div>
+    </div>
+  </dialog>
 
   <script>
     const identities = [
@@ -364,6 +428,67 @@
       }
     ];
 
+    const newIdentities = [
+      { category: "Pythagorean identities", question: String.raw`\sin^2(x) + \cos^2(x)`, answer: String.raw`1` },
+      { category: "Pythagorean identities", question: String.raw`1 + \tan^2(x)`, answer: String.raw`\sec^2(x)` },
+      { category: "Pythagorean identities", question: String.raw`1 + \cot^2(x)`, answer: String.raw`\csc^2(x)` },
+
+      { category: "Reciprocal and quotient identities", question: String.raw`\sec(x)`, answer: String.raw`\frac{1}{\cos(x)}` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\csc(x)`, answer: String.raw`\frac{1}{\sin(x)}` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\cot(x)`, answer: String.raw`\frac{1}{\tan(x)}` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\tan(x)`, answer: String.raw`\frac{\sin(x)}{\cos(x)}` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\cot(x)`, answer: String.raw`\frac{\cos(x)}{\sin(x)}` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\sin(x)\csc(x)`, answer: String.raw`1` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\cos(x)\sec(x)`, answer: String.raw`1` },
+      { category: "Reciprocal and quotient identities", question: String.raw`\tan(x)\cot(x)`, answer: String.raw`1` },
+
+      { category: "Double-angle formulas", question: String.raw`\sin(2x)`, answer: String.raw`2\sin(x)\cos(x)` },
+      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`\cos^2(x) - \sin^2(x)` },
+      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`2\cos^2(x) - 1` },
+      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`1 - 2\sin^2(x)` },
+      { category: "Double-angle formulas", question: String.raw`\tan(2x)`, answer: String.raw`\frac{2\tan(x)}{1 - \tan^2(x)}` },
+
+      { category: "Half-angle formulas", question: String.raw`\sin\left(\frac{x}{2}\right)`, answer: String.raw`\pm\sqrt{\frac{1 - \cos(x)}{2}}` },
+      { category: "Half-angle formulas", question: String.raw`\cos\left(\frac{x}{2}\right)`, answer: String.raw`\pm\sqrt{\frac{1 + \cos(x)}{2}}` },
+      { category: "Half-angle formulas", question: String.raw`\tan\left(\frac{x}{2}\right)`, answer: String.raw`\pm\sqrt{\frac{1 - \cos(x)}{1 + \cos(x)}}` },
+      { category: "Half-angle formulas", question: String.raw`\tan\left(\frac{x}{2}\right)`, answer: String.raw`\frac{\sin(x)}{1 + \cos(x)}` },
+      { category: "Half-angle formulas", question: String.raw`\tan\left(\frac{x}{2}\right)`, answer: String.raw`\frac{1 - \cos(x)}{\sin(x)}` },
+
+      { category: "Sum and difference formulas", question: String.raw`\sin(a + b)`, answer: String.raw`\sin(a)\cos(b) + \cos(a)\sin(b)` },
+      { category: "Sum and difference formulas", question: String.raw`\sin(a - b)`, answer: String.raw`\sin(a)\cos(b) - \cos(a)\sin(b)` },
+      { category: "Sum and difference formulas", question: String.raw`\cos(a + b)`, answer: String.raw`\cos(a)\cos(b) - \sin(a)\sin(b)` },
+      { category: "Sum and difference formulas", question: String.raw`\cos(a - b)`, answer: String.raw`\cos(a)\cos(b) + \sin(a)\sin(b)` },
+      { category: "Sum and difference formulas", question: String.raw`\tan(a + b)`, answer: String.raw`\frac{\tan(a) + \tan(b)}{1 - \tan(a)\tan(b)}` },
+      { category: "Sum and difference formulas", question: String.raw`\tan(a - b)`, answer: String.raw`\frac{\tan(a) - \tan(b)}{1 + \tan(a)\tan(b)}` },
+      { category: "Sum and difference formulas", question: String.raw`\sin(a) + \sin(b)`, answer: String.raw`2\sin\left(\frac{a + b}{2}\right)\cos\left(\frac{a - b}{2}\right)` },
+      { category: "Sum and difference formulas", question: String.raw`\sin(a) - \sin(b)`, answer: String.raw`2\cos\left(\frac{a + b}{2}\right)\sin\left(\frac{a - b}{2}\right)` },
+      { category: "Sum and difference formulas", question: String.raw`\cos(a) + \cos(b)`, answer: String.raw`2\cos\left(\frac{a + b}{2}\right)\cos\left(\frac{a - b}{2}\right)` },
+      { category: "Sum and difference formulas", question: String.raw`\cos(a) - \cos(b)`, answer: String.raw`-2\sin\left(\frac{a + b}{2}\right)\sin\left(\frac{a - b}{2}\right)` },
+
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}C`, answer: String.raw`0` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}x^n`, answer: String.raw`nx^{n - 1}` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\sin(x)`, answer: String.raw`\cos(x)` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\cos(x)`, answer: String.raw`-\sin(x)` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\tan(x)`, answer: String.raw`\sec^2(x)` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\cot(x)`, answer: String.raw`-\csc^2(x)` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\sec(x)`, answer: String.raw`\sec(x)\tan(x)` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\csc(x)`, answer: String.raw`-\csc(x)\cot(x)` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}e^x`, answer: String.raw`e^x` },
+      { category: "Derivative rules", question: String.raw`\frac{d}{dx}\ln|x|`, answer: String.raw`\frac{1}{x}` },
+
+      { category: "Integral rules", question: String.raw`\int x^n\,dx,\quad n \ne -1`, answer: String.raw`\frac{x^{n + 1}}{n + 1} + C` },
+      { category: "Integral rules", question: String.raw`\int \frac{1}{x}\,dx`, answer: String.raw`\ln|x| + C` },
+      { category: "Integral rules", question: String.raw`\int e^x\,dx`, answer: String.raw`e^x + C` },
+      { category: "Integral rules", question: String.raw`\int \sin(x)\,dx`, answer: String.raw`-\cos(x) + C` },
+      { category: "Integral rules", question: String.raw`\int \cos(x)\,dx`, answer: String.raw`\sin(x) + C` },
+      { category: "Integral rules", question: String.raw`\int \sec^2(x)\,dx`, answer: String.raw`\tan(x) + C` },
+      { category: "Integral rules", question: String.raw`\int \csc^2(x)\,dx`, answer: String.raw`-\cot(x) + C` },
+      { category: "Integral rules", question: String.raw`\int \sec(x)\tan(x)\,dx`, answer: String.raw`\sec(x) + C` },
+      { category: "Integral rules", question: String.raw`\int \frac{1}{1 + x^2}\,dx`, answer: String.raw`\arctan(x) + C` }
+    ];
+
+    identities.push(...newIdentities);
+
     let currentIndex = -1;
     let round = 0;
     const flashcard = document.getElementById("flashcard");
@@ -378,12 +503,18 @@
       }
       currentIndex = nextIndex;
       round += 1;
-      document.getElementById("question").textContent = identities[currentIndex].question;
+      const currentIdentity = identities[currentIndex];
+      const questionElement = document.getElementById("question");
+      if (currentIdentity.category && window.katex) {
+        katex.render(currentIdentity.question, questionElement, { displayMode: true, throwOnError: false });
+      } else {
+        questionElement.textContent = currentIdentity.question;
+      }
       const answerElement = document.getElementById("answer");
       if (window.katex) {
-        katex.render(identities[currentIndex].answer, answerElement, { displayMode: true, throwOnError: false });
+        katex.render(currentIdentity.answer, answerElement, { displayMode: true, throwOnError: false });
       } else {
-        answerElement.textContent = identities[currentIndex].answer;
+        answerElement.textContent = currentIdentity.answer;
       }
       document.getElementById("card-number").textContent = String(currentIndex + 1).padStart(2, "0");
       document.getElementById("answer-number").textContent = String(currentIndex + 1).padStart(2, "0");
@@ -405,6 +536,81 @@
 
     revealButton.addEventListener("click", revealCard);
     document.getElementById("next-card").addEventListener("click", loadCard);
+
+    const studyDialog = document.getElementById("study-dialog");
+    document.getElementById("study-open").addEventListener("click", () => {
+      const studyContent = document.getElementById("study-content");
+      studyContent.replaceChildren();
+      const categories = [
+        { title: "Core flashcards", entries: identities.filter((identity) => !identity.category) },
+        ...Array.from(new Set(newIdentities.map((identity) => identity.category))).map((title) => ({
+          title,
+          entries: identities.filter((identity) => identity.category === title)
+        }))
+      ];
+
+      categories.forEach(({ title, entries }) => {
+        const section = document.createElement("section");
+        section.className = "study-group";
+        const heading = document.createElement("h3");
+        heading.className = "study-group-title";
+        heading.textContent = title;
+        const list = document.createElement("ul");
+        list.className = "study-list";
+
+        entries.forEach((identity) => {
+          const item = document.createElement("li");
+          item.className = "study-item";
+          if (identity.category) {
+            const equation = document.createElement("div");
+            equation.className = "study-equation";
+            const left = document.createElement("span");
+            const equals = document.createElement("span");
+            equals.className = "study-equals";
+            equals.textContent = "=";
+            const right = document.createElement("span");
+            if (window.katex) {
+              katex.render(identity.question, left, { throwOnError: false });
+              katex.render(identity.answer, right, { throwOnError: false });
+            } else {
+              left.textContent = identity.question;
+              right.textContent = identity.answer;
+            }
+            equation.append(left, equals, right);
+            item.append(equation);
+          } else {
+            const prompt = document.createElement("p");
+            prompt.className = "study-prompt";
+            prompt.textContent = identity.question;
+            const answer = document.createElement("div");
+            answer.className = "study-answer";
+            if (window.katex) {
+              katex.render(identity.answer, answer, { throwOnError: false });
+            } else {
+              answer.textContent = identity.answer;
+            }
+            item.append(prompt, answer);
+          }
+          list.append(item);
+        });
+
+        section.append(heading, list);
+        studyContent.append(section);
+      });
+
+      studyDialog.showModal();
+    });
+
+    document.getElementById("study-close").addEventListener("click", () => studyDialog.close());
+    studyDialog.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        studyDialog.close();
+      }
+    });
+    studyDialog.addEventListener("click", (event) => {
+      if (event.target === studyDialog) studyDialog.close();
+    });
     document.addEventListener("DOMContentLoaded", loadCard, { once: true });
   </script>
 </body>
