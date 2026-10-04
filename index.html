@@ -536,6 +536,7 @@
       { category: "Transform properties", question: String.raw`\mathcal{L}\left\{\int_0^t f(\tau)\,d\tau\right\}`, answer: String.raw`\frac{F(s)}{s}` },
       { category: "Transform properties", question: String.raw`\mathcal{L}\{tf(t)\}`, answer: String.raw`-F'(s)` },
       { category: "Transform properties", question: String.raw`\mathcal{L}\{t^n f(t)\}`, answer: String.raw`(-1)^nF^{(n)}(s)` },
+      { category: "Transform properties", question: String.raw`\mathcal{L}\left\{\frac{f(t)}{t}\right\},\quad f(0^+)=0`, answer: String.raw`\int_s^\infty F(\sigma)\,d\sigma` },
       { category: "Transform properties", question: String.raw`\mathcal{L}\{(f * g)(t)\}`, answer: String.raw`F(s)G(s)` },
       { category: "Transform properties", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t+T)=f(t)`, answer: String.raw`\frac{\int_0^T e^{-st}f(t)\,dt}{1 - e^{-sT}}` },
       { category: "Transform properties", question: String.raw`f(0^+)`, answer: String.raw`\lim_{s\to\infty}sF(s)` },
