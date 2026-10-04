@@ -283,7 +283,8 @@
     .study-group + .study-group { margin-top: 21px; padding-top: 18px; border-top: 1px solid var(--line); }
     .study-group-title { margin: 0 0 7px; color: var(--accent); font-family: var(--mono); font-size: 10px; font-weight: 400; text-transform: uppercase; }
     .study-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 25px; margin: 0; padding: 0; list-style: none; }
-    .study-item { min-width: 0; padding: 12px 0; overflow-x: auto; border-bottom: 1px solid #30393499; }
+    .study-item { min-width: 0; padding: 12px 0; overflow-x: auto; border-bottom: 1px solid var(--line); }
+    .study-name { margin: 0 0 6px; color: var(--muted); font-family: var(--mono); font-size: 10px; font-weight: 500; line-height: 1.4; text-transform: uppercase; }
     .study-equation { display: flex; align-items: baseline; gap: 7px; min-width: max-content; font-size: 15px; line-height: 1.6; }
     .study-equals { color: var(--accent); }
     .study-prompt { margin: 0 0 7px; color: var(--muted); font-size: 12px; line-height: 1.4; }
@@ -526,21 +527,21 @@
       { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{b}{s^2 + b^2}\right\}`, answer: String.raw`\sin(bt)` },
       { category: "Common transform pairs", question: String.raw`\mathcal{L}^{-1}\left\{\frac{1}{s^{n + 1}}\right\},\quad n \in \mathbb{N}_0`, answer: String.raw`\frac{t^n}{n!}` },
 
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{af(t) + bg(t)\}`, answer: String.raw`aF(s) + bG(s)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{e^{at}f(t)\}`, answer: String.raw`F(s - a)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{u(t - a)f(t - a)\}`, answer: String.raw`e^{-as}F(s)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{f(at)\},\quad a > 0`, answer: String.raw`\frac{1}{a}F\left(\frac{s}{a}\right)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{f'(t)\}`, answer: String.raw`sF(s) - f(0)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{f''(t)\}`, answer: String.raw`s^2F(s) - sf(0) - f'(0)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{f^{(n)}(t)\}`, answer: String.raw`s^nF(s) - \sum_{k=0}^{n-1}s^{n-1-k}f^{(k)}(0)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\left\{\int_0^t f(\tau)\,d\tau\right\}`, answer: String.raw`\frac{F(s)}{s}` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{tf(t)\}`, answer: String.raw`-F'(s)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{t^n f(t)\}`, answer: String.raw`(-1)^nF^{(n)}(s)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\left\{\frac{f(t)}{t}\right\},\quad f(0^+)=0`, answer: String.raw`\int_s^\infty F(\sigma)\,d\sigma` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{(f * g)(t)\}`, answer: String.raw`F(s)G(s)` },
-      { category: "Transform properties", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t+T)=f(t)`, answer: String.raw`\frac{\int_0^T e^{-st}f(t)\,dt}{1 - e^{-sT}}` },
-      { category: "Transform properties", question: String.raw`f(0^+)`, answer: String.raw`\lim_{s\to\infty}sF(s)` },
-      { category: "Transform properties", question: String.raw`\lim_{t\to\infty}f(t)`, answer: String.raw`\lim_{s\to 0}sF(s)` }
+      { category: "Transform properties", name: "Linearity", question: String.raw`\mathcal{L}\{af(t) + bg(t)\}`, answer: String.raw`aF(s) + bG(s)` },
+      { category: "Transform properties", name: "First shifting theorem (s-shifting)", question: String.raw`\mathcal{L}\{e^{at}f(t)\}`, answer: String.raw`F(s - a)` },
+      { category: "Transform properties", name: "Second shifting theorem (Heaviside time shift)", question: String.raw`\mathcal{L}\{u(t - a)f(t - a)\}`, answer: String.raw`e^{-as}F(s)` },
+      { category: "Transform properties", name: "Scaling property", question: String.raw`\mathcal{L}\{f(at)\},\quad a > 0`, answer: String.raw`\frac{1}{a}F\left(\frac{s}{a}\right)` },
+      { category: "Transform properties", name: "First derivative theorem", question: String.raw`\mathcal{L}\{f'(t)\}`, answer: String.raw`sF(s) - f(0)` },
+      { category: "Transform properties", name: "Second derivative theorem", question: String.raw`\mathcal{L}\{f''(t)\}`, answer: String.raw`s^2F(s) - sf(0) - f'(0)` },
+      { category: "Transform properties", name: "Nth derivative theorem", question: String.raw`\mathcal{L}\{f^{(n)}(t)\}`, answer: String.raw`s^nF(s) - \sum_{k=0}^{n-1}s^{n-1-k}f^{(k)}(0)` },
+      { category: "Transform properties", name: "Integral in time", question: String.raw`\mathcal{L}\left\{\int_0^t f(\tau)\,d\tau\right\}`, answer: String.raw`\frac{F(s)}{s}` },
+      { category: "Transform properties", name: "Multiplication by t", question: String.raw`\mathcal{L}\{tf(t)\}`, answer: String.raw`-F'(s)` },
+      { category: "Transform properties", name: "Multiplication by t to the nth power", question: String.raw`\mathcal{L}\{t^n f(t)\}`, answer: String.raw`(-1)^nF^{(n)}(s)` },
+      { category: "Transform properties", name: "Division by t", question: String.raw`\mathcal{L}\left\{\frac{f(t)}{t}\right\},\quad f(0^+)=0`, answer: String.raw`\int_s^\infty F(\sigma)\,d\sigma` },
+      { category: "Transform properties", name: "Convolution theorem", question: String.raw`\mathcal{L}\{(f * g)(t)\}`, answer: String.raw`F(s)G(s)` },
+      { category: "Transform properties", name: "Periodic function theorem", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t+T)=f(t)`, answer: String.raw`\frac{\int_0^T e^{-st}f(t)\,dt}{1 - e^{-sT}}` },
+      { category: "Transform properties", name: "Initial value theorem", question: String.raw`f(0^+)`, answer: String.raw`\lim_{s\to\infty}sF(s)` },
+      { category: "Transform properties", name: "Final value theorem", question: String.raw`\lim_{t\to\infty}f(t)`, answer: String.raw`\lim_{s\to 0}sF(s)` }
     ];
 
     let currentIndex = -1;
@@ -630,6 +631,12 @@
         groupEntries.forEach((identity) => {
           const item = document.createElement("li");
           item.className = "study-item";
+          if (identity.name) {
+            const name = document.createElement("p");
+            name.className = "study-name";
+            name.textContent = identity.name;
+            item.append(name);
+          }
           if (identity.category) {
             const equation = document.createElement("div");
             equation.className = "study-equation";
