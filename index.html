@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101312">
+  <meta name="description" content="A focused set of trigonometric identity flashcards.">
+  <title>Identity Practice | Math Flashcards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --page: #101312;
+      --surface: #171b19;
+      --surface-raised: #1d2320;
+      --line: #303934;
+      --text: #f0f1e9;
+      --muted: #9aa49d;
+      --lime: #c8f169;
+      --lime-ink: #171b12;
+      --coral: #ff8f75;
+      --mono: "DM Mono", monospace;
+      --sans: "DM Sans", sans-serif;
+      --serif: "Instrument Serif", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--text);
+      background-color: var(--page);
+      background-image: radial-gradient(ellipse at 50% 44%, #252c2717 0, transparent 58%),
+        linear-gradient(90deg, transparent 49.95%, #ffffff08 50%, transparent 50.05%);
+      font-family: var(--sans);
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .app-shell {
+      width: min(100% - 48px, 860px);
+      min-height: 100vh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      min-height: 78px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      animation: enter 500ms ease both;
+    }
+
+    .wordmark {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .wordmark-mark {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #637344;
+      border-radius: 50%;
+      color: var(--lime);
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .session-label, .eyebrow, .card-index, .field-label, .round-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .session-label { color: var(--muted); }
+
+    main {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 55px 0 48px;
+      animation: enter 650ms 80ms ease both;
+    }
+
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow { margin: 0 0 10px; color: var(--lime); }
+
+    h1 {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(36px, 6vw, 54px);
+      font-weight: 400;
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .round-label { padding-bottom: 5px; color: var(--muted); white-space: nowrap; }
+    .round-label span { color: var(--text); }
+
+    .card-stage {
+      width: 100%;
+      height: 330px;
+      perspective: 1200px;
+    }
+
+    .flashcard {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 650ms cubic-bezier(.2,.7,.2,1);
+    }
+
+    .flashcard.is-revealed { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--surface);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .card-face::before, .card-face::after {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      content: "";
+      border-color: #71824f;
+      border-style: solid;
+      opacity: .7;
+    }
+
+    .card-face::before { top: 15px; left: 15px; border-width: 1px 0 0 1px; }
+    .card-face::after { right: 15px; bottom: 15px; border-width: 0 1px 1px 0; }
+    .card-back { transform: rotateY(180deg); background: var(--surface-raised); }
+
+    .card-index { position: absolute; top: 23px; color: var(--muted); }
+
+    .card-prompt {
+      max-width: 650px;
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(30px, 5vw, 48px);
+      font-weight: 400;
+      line-height: 1.14;
+      text-align: center;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .card-hint {
+      position: absolute;
+      bottom: 23px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .answer-math {
+      max-width: 100%;
+      color: var(--lime);
+      font-size: clamp(22px, 4vw, 36px);
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+
+    .answer-math .katex-display { margin: 0; }
+    .answer-caption { position: absolute; bottom: 23px; margin: 0; color: var(--muted); font-size: 12px; }
+
+    .practice-form { margin-top: 25px; }
+
+    .field-label { display: block; margin-bottom: 9px; color: var(--muted); }
+
+    .answer-row { display: flex; gap: 10px; }
+
+    .answer-input {
+      width: 100%;
+      min-width: 0;
+      height: 50px;
+      padding: 0 15px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      outline: none;
+      color: var(--text);
+      background: #141816;
+      font-size: 14px;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .answer-input::placeholder { color: #727c75; }
+    .answer-input:focus { border-color: #92ab63; box-shadow: 0 0 0 3px #c8f16916; }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 0 17px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .button:hover { transform: translateY(-1px); }
+    .button:active { transform: translateY(0); }
+    .button:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+    .button-primary { color: var(--lime-ink); background: var(--lime); }
+    .button-primary:hover { background: #d5f58d; }
+    .button-secondary { border-color: var(--line); color: var(--text); background: transparent; }
+    .button-secondary:hover { border-color: #768078; background: #ffffff08; }
+
+    .form-bottom {
+      min-height: 47px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .feedback { min-height: 18px; margin: 12px 0 0; color: var(--muted); font-size: 12px; }
+    .feedback.is-correct { color: var(--lime); }
+    .feedback.is-incorrect { color: var(--coral); }
+
+    .next-button { min-height: 38px; padding: 0 11px; font-size: 12px; }
+    .next-button span { font-size: 16px; line-height: 1; }
+
+    footer {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+
+    .footer-dot { display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: var(--lime); }
+
+    @keyframes enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .app-shell { width: min(100% - 32px, 480px); }
+      .topbar { min-height: 66px; }
+      .session-label { font-size: 9px; }
+      main { padding: 39px 0 32px; }
+      .intro { align-items: start; flex-direction: column; gap: 13px; margin-bottom: 18px; }
+      .card-stage { height: 300px; }
+      .card-face { padding: 30px 22px; }
+      .answer-row { flex-direction: column; gap: 9px; }
+      .answer-row .button { width: 100%; }
+      .form-bottom { margin-top: 2px; }
+      footer { min-height: 52px; font-size: 9px; }
+    }
+
+    @media (max-width: 370px) {
+      .app-shell { width: calc(100% - 24px); }
+      .wordmark { font-size: 12px; }
+      .card-stage { height: 280px; }
+      .card-prompt { font-size: 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="wordmark"><span class="wordmark-mark" aria-hidden="true">&#8721;</span><span>Math, by memory</span></div>
+      <span class="session-label">TRIGONOMETRY / SET 01</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">A little practice goes a long way</p>
+          <h1 id="page-title">Identity practice</h1>
+        </div>
+        <div class="round-label">ROUND <span id="round-count">01</span></div>
+      </section>
+
+      <section class="card-stage" aria-label="Flashcard">
+        <div class="flashcard" id="flashcard">
+          <article class="card-face card-front" aria-live="polite">
+            <span class="card-index">PROMPT / <span id="card-number">01</span></span>
+            <p class="card-prompt" id="question"></p>
+            <p class="card-hint">Recall the identity, then check your answer</p>
+          </article>
+          <article class="card-face card-back" aria-live="polite" aria-hidden="true">
+            <span class="card-index">IDENTITY / <span id="answer-number">01</span></span>
+            <div class="answer-math" id="answer"></div>
+            <p class="answer-caption">Take a moment to commit it to memory</p>
+          </article>
+        </div>
+      </section>
+
+      <form class="practice-form" id="answer-form">
+        <label class="field-label" for="guess">YOUR ANSWER</label>
+        <div class="answer-row">
+          <input class="answer-input" id="guess" name="guess" type="text" autocomplete="off" placeholder="Type an identity to check your recall...">
+          <button class="button button-primary" type="submit">Reveal answer</button>
+        </div>
+        <div class="form-bottom">
+          <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
+          <button class="button button-secondary next-button" id="next-card" type="button">Next card <span aria-hidden="true">&#8594;</span></button>
+        </div>
+      </form>
+    </main>
+
+    <footer>
+      <span><i class="footer-dot" aria-hidden="true"></i>EIGHT IDENTITIES</span>
+      <span>ONE CARD AT A TIME</span>
+    </footer>
+  </div>
+
+  <script>
+    const identities = [
+      {
+        question: "What is the Pythagorean identity for sine and cosine?",
+        answer: String.raw`\sin^2(x) + \cos^2(x) = 1`
+      },
+      {
+        question: "What is the double-angle identity for sine?",
+        answer: String.raw`\sin(2x) = 2\sin(x)\cos(x)`
+      },
+      {
+        question: "What is the double-angle identity for cosine, written with cosine squared?",
+        answer: String.raw`\cos(2x) = 2\cos^2(x) - 1`
+      },
+      {
+        question: "What is the double-angle identity for cosine, written with sine squared?",
+        answer: String.raw`\cos(2x) = 1 - 2\sin^2(x)`
+      },
+      {
+        question: "What is the power-reduction identity for sine squared?",
+        answer: String.raw`\sin^2(x) = \frac{1 - \cos(2x)}{2}`
+      },
+      {
+        question: "What is the power-reduction identity for cosine squared?",
+        answer: String.raw`\cos^2(x) = \frac{1 + \cos(2x)}{2}`
+      },
+      {
+        question: "What is the Pythagorean identity involving tangent and secant?",
+        answer: String.raw`1 + \tan^2(x) = \sec^2(x)`
+      },
+      {
+        question: "What is the double-angle identity for tangent?",
+        answer: String.raw`\tan(2x) = \frac{2\tan(x)}{1 - \tan^2(x)}`
+      }
+    ];
+
+    let currentIndex = -1;
+    let round = 0;
+    const flashcard = document.getElementById("flashcard");
+    const front = document.querySelector(".card-front");
+    const back = document.querySelector(".card-back");
+    const guessInput = document.getElementById("guess");
+    const feedback = document.getElementById("feedback");
+
+    function loadCard() {
+      let nextIndex = Math.floor(Math.random() * identities.length);
+      if (identities.length > 1 && nextIndex === currentIndex) {
+        nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (identities.length - 1))) % identities.length;
+      }
+      currentIndex = nextIndex;
+      round += 1;
+      document.getElementById("question").textContent = identities[currentIndex].question;
+      const answerElement = document.getElementById("answer");
+      if (window.katex) {
+        katex.render(identities[currentIndex].answer, answerElement, { displayMode: true, throwOnError: false });
+      } else {
+        answerElement.textContent = identities[currentIndex].answer;
+      }
+      document.getElementById("card-number").textContent = String(currentIndex + 1).padStart(2, "0");
+      document.getElementById("answer-number").textContent = String(currentIndex + 1).padStart(2, "0");
+      document.getElementById("round-count").textContent = String(round).padStart(2, "0");
+      flashcard.classList.remove("is-revealed");
+      back.setAttribute("aria-hidden", "true");
+      front.setAttribute("aria-hidden", "false");
+      guessInput.value = "";
+      feedback.textContent = "";
+      feedback.className = "feedback";
+    }
+
+    function revealCard() {
+      const expected = identities[currentIndex].answer
+        .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1)/($2)")
+        .replace(/\\(sin|cos|tan|sec|csc|cot)/g, "$1")
+        .replace(/[\\{}()\s]/g, "")
+        .toLowerCase();
+      const actual = guessInput.value.replace(/[\\{}()\s]/g, "").toLowerCase();
+      const isCorrect = actual.length > 0 && actual === expected;
+
+      flashcard.classList.add("is-revealed");
+      back.setAttribute("aria-hidden", "false");
+      front.setAttribute("aria-hidden", "true");
+      feedback.textContent = isCorrect
+        ? "That matches. Nicely remembered."
+        : actual.length === 0
+          ? "Here is the identity. Try typing it on the next round."
+          : "Not quite this time. Take in the answer and try again on the next card.";
+      feedback.className = isCorrect ? "feedback is-correct" : "feedback is-incorrect";
+    }
+
+    document.getElementById("answer-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      revealCard();
+    });
+
+    document.getElementById("next-card").addEventListener("click", loadCard);
+    document.addEventListener("DOMContentLoaded", loadCard, { once: true });
+  </script>
+</body>
+</html>
