@@ -114,6 +114,32 @@
       margin-bottom: 24px;
     }
 
+    .practice-modes {
+      width: fit-content;
+      display: flex;
+      gap: 3px;
+      margin: -5px 0 18px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #eef2ef;
+    }
+
+    .mode-button {
+      min-height: 36px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 3px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .mode-button[aria-pressed="true"] { color: #fff; background: var(--accent); }
+    .mode-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
     .eyebrow { margin: 0 0 10px; color: var(--accent); }
 
     h1 {
@@ -175,6 +201,8 @@
     .card-back { transform: rotateY(180deg); background: var(--surface-raised); }
 
     .card-index { position: absolute; top: 23px; color: var(--muted); }
+    .card-name { margin: 0 0 12px; color: var(--muted); font-family: var(--mono); font-size: 10px; text-align: center; text-transform: uppercase; }
+    .card-name[hidden] { display: none; }
 
     .card-prompt {
       max-width: 650px;
@@ -319,6 +347,8 @@
       .study-open { min-height: 36px; padding: 0 10px; }
       main { padding: 39px 0 32px; }
       .intro { align-items: start; flex-direction: column; gap: 13px; margin-bottom: 18px; }
+      .practice-modes { width: 100%; margin-top: -3px; }
+      .mode-button { flex: 1; padding: 0 8px; }
       .card-stage { height: 300px; }
       .card-face { padding: 30px 22px; }
       .card-actions { margin-top: 17px; }
@@ -347,7 +377,7 @@
     <header class="topbar">
       <div class="wordmark"><span class="wordmark-mark" aria-hidden="true">&#8721;</span><span>Math, by memory</span></div>
       <div class="header-actions">
-        <span class="session-label">TRIG / CALCULUS / SET 01</span>
+        <span class="session-label">IDENTITIES / LAPLACE / SET 01</span>
         <button class="button button-secondary study-open" id="study-open" type="button">Study sheet</button>
       </div>
     </header>
@@ -361,15 +391,21 @@
         <div class="round-label">ROUND <span id="round-count">01</span></div>
       </section>
 
+      <div class="practice-modes" role="group" aria-label="Choose practice deck">
+        <button class="mode-button" id="mode-identities" type="button" aria-pressed="true">Identities</button>
+        <button class="mode-button" id="mode-laplace" type="button" aria-pressed="false">Laplace transforms</button>
+      </div>
+
       <section class="card-stage" aria-label="Flashcard">
         <div class="flashcard" id="flashcard">
           <article class="card-face card-front" aria-live="polite">
-            <span class="card-index">PROMPT / <span id="card-number">01</span></span>
+            <span class="card-index"><span id="card-kind">PROMPT</span> / <span id="card-number">01</span></span>
+            <p class="card-name" id="card-name" hidden></p>
             <p class="card-prompt" id="question"></p>
-            <p class="card-hint">Work out the right-hand side, then reveal to check</p>
+            <p class="card-hint" id="card-hint">Work out the right-hand side, then reveal to check</p>
           </article>
           <article class="card-face card-back" aria-live="polite" aria-hidden="true">
-            <span class="card-index">IDENTITY / <span id="answer-number">01</span></span>
+            <span class="card-index"><span id="answer-kind">IDENTITY</span> / <span id="answer-number">01</span></span>
             <div class="answer-math" id="answer"></div>
             <p class="answer-caption">Take a moment to commit it to memory</p>
           </article>
@@ -383,7 +419,7 @@
     </main>
 
     <footer>
-      <span><i class="footer-dot" aria-hidden="true"></i>58 IDENTITIES</span>
+      <span><i class="footer-dot" aria-hidden="true"></i><span id="deck-count">83 IDENTITY CARDS</span></span>
       <span>ONE CARD AT A TIME</span>
     </footer>
   </div>
@@ -502,6 +538,40 @@
       { category: "Integral rules", question: String.raw`\int \frac{1}{1 + x^2}\,dx`, answer: String.raw`\arctan(x) + C` }
     ];
 
+    const logarithmIdentities = [
+      { category: "Exponent rules", name: "Product of powers", question: String.raw`a^m \cdot a^n`, answer: String.raw`a^{m + n}` },
+      { category: "Exponent rules", name: "Quotient of powers", question: String.raw`\frac{a^m}{a^n}`, answer: String.raw`a^{m - n}` },
+      { category: "Exponent rules", name: "Power of a power", question: String.raw`(a^m)^n`, answer: String.raw`a^{mn}` },
+      { category: "Exponent rules", name: "Power of a product", question: String.raw`(ab)^n`, answer: String.raw`a^n b^n` },
+      { category: "Exponent rules", name: "Power of a quotient", question: String.raw`\left(\frac{a}{b}\right)^n`, answer: String.raw`\frac{a^n}{b^n}` },
+      { category: "Exponent rules", name: "Zero exponent", question: String.raw`a^0`, answer: String.raw`1,\quad a \ne 0` },
+      { category: "Exponent rules", name: "Negative exponent", question: String.raw`a^{-n}`, answer: String.raw`\frac{1}{a^n}` },
+      { category: "Exponent rules", name: "Fractional exponent", question: String.raw`a^{m/n}`, answer: String.raw`\sqrt[n]{a^m}` },
+      { category: "Exponent rules", name: "Exponential sum", question: String.raw`e^{x + y}`, answer: String.raw`e^x e^y` },
+      { category: "Exponent rules", name: "Exponential difference", question: String.raw`e^{x - y}`, answer: String.raw`\frac{e^x}{e^y}` },
+
+      { category: "Logarithm laws", name: "Product law", question: String.raw`\log_b(xy)`, answer: String.raw`\log_b(x) + \log_b(y)` },
+      { category: "Logarithm laws", name: "Quotient law", question: String.raw`\log_b\left(\frac{x}{y}\right)`, answer: String.raw`\log_b(x) - \log_b(y)` },
+      { category: "Logarithm laws", name: "Power law", question: String.raw`\log_b(x^r)`, answer: String.raw`r\log_b(x)` },
+      { category: "Logarithm laws", name: "Change of base", question: String.raw`\log_b(x)`, answer: String.raw`\frac{\ln(x)}{\ln(b)}` },
+      { category: "Logarithm laws", name: "Reciprocal change of base", question: String.raw`\log_b(x)`, answer: String.raw`\frac{1}{\log_x(b)}` },
+      { category: "Logarithm laws", name: "Logarithm of its base", question: String.raw`\log_b(b)`, answer: String.raw`1` },
+      { category: "Logarithm laws", name: "Logarithm of one", question: String.raw`\log_b(1)`, answer: String.raw`0` },
+      { category: "Logarithm laws", name: "Logarithm of an exponential", question: String.raw`\log_b(b^x)`, answer: String.raw`x` },
+      { category: "Logarithm laws", name: "Exponential of a logarithm", question: String.raw`b^{\log_b(x)}`, answer: String.raw`x` },
+
+      { category: "Natural logarithm rules", name: "Natural log product law", question: String.raw`\ln(xy)`, answer: String.raw`\ln(x) + \ln(y)` },
+      { category: "Natural logarithm rules", name: "Natural log quotient law", question: String.raw`\ln\left(\frac{x}{y}\right)`, answer: String.raw`\ln(x) - \ln(y)` },
+      { category: "Natural logarithm rules", name: "Natural log power law", question: String.raw`\ln(x^r)`, answer: String.raw`r\ln(x)` },
+      { category: "Natural logarithm rules", name: "Natural log of a reciprocal", question: String.raw`\ln\left(\frac{1}{x}\right)`, answer: String.raw`-\ln(x)` },
+      { category: "Natural logarithm rules", name: "Natural log cancels exponential", question: String.raw`\ln(e^x)`, answer: String.raw`x` },
+      { category: "Natural logarithm rules", name: "Exponential cancels natural log", question: String.raw`e^{\ln(x)}`, answer: String.raw`x` },
+      { category: "Natural logarithm rules", name: "Natural log of one", question: String.raw`\ln(1)`, answer: String.raw`0` },
+      { category: "Natural logarithm rules", name: "Natural log of e", question: String.raw`\ln(e)`, answer: String.raw`1` }
+    ];
+
+    newIdentities.push(...logarithmIdentities);
+
     identities.push(...newIdentities);
 
     const laplaceIdentities = [
@@ -546,19 +616,23 @@
 
     let currentIndex = -1;
     let round = 0;
+    let practiceMode = "identities";
     const flashcard = document.getElementById("flashcard");
     const front = document.querySelector(".card-front");
     const back = document.querySelector(".card-back");
     const revealButton = document.getElementById("reveal-button");
+    const identityModeButton = document.getElementById("mode-identities");
+    const laplaceModeButton = document.getElementById("mode-laplace");
 
     function loadCard() {
-      let nextIndex = Math.floor(Math.random() * identities.length);
-      if (identities.length > 1 && nextIndex === currentIndex) {
-        nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (identities.length - 1))) % identities.length;
+      const activeDeck = practiceMode === "laplace" ? laplaceIdentities : identities;
+      let nextIndex = Math.floor(Math.random() * activeDeck.length);
+      if (activeDeck.length > 1 && nextIndex === currentIndex) {
+        nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (activeDeck.length - 1))) % activeDeck.length;
       }
       currentIndex = nextIndex;
       round += 1;
-      const currentIdentity = identities[currentIndex];
+      const currentIdentity = activeDeck[currentIndex];
       const questionElement = document.getElementById("question");
       if (currentIdentity.category && window.katex) {
         katex.render(currentIdentity.question, questionElement, { displayMode: true, throwOnError: false });
@@ -574,11 +648,33 @@
       document.getElementById("card-number").textContent = String(currentIndex + 1).padStart(2, "0");
       document.getElementById("answer-number").textContent = String(currentIndex + 1).padStart(2, "0");
       document.getElementById("round-count").textContent = String(round).padStart(2, "0");
+      document.getElementById("card-kind").textContent = practiceMode === "laplace" ? "TRANSFORM" : "PROMPT";
+      document.getElementById("answer-kind").textContent = practiceMode === "laplace" ? "RESULT" : "IDENTITY";
+      const cardName = document.getElementById("card-name");
+      cardName.textContent = currentIdentity.name || currentIdentity.category || "";
+      cardName.hidden = !cardName.textContent;
+      document.getElementById("card-hint").textContent = practiceMode === "laplace"
+        ? "Recall the transform or property, then reveal to check"
+        : "Work out the right-hand side, then reveal to check";
+      document.getElementById("deck-count").textContent = practiceMode === "laplace"
+        ? `${laplaceIdentities.length} LAPLACE CARDS`
+        : `${identities.length} IDENTITY CARDS`;
       flashcard.classList.remove("is-revealed");
       back.setAttribute("aria-hidden", "true");
       front.setAttribute("aria-hidden", "false");
       revealButton.disabled = false;
       revealButton.textContent = "Reveal answer";
+    }
+
+    function selectPracticeMode(mode) {
+      if (practiceMode === mode) return;
+      practiceMode = mode;
+      currentIndex = -1;
+      round = 0;
+      identityModeButton.setAttribute("aria-pressed", String(mode === "identities"));
+      laplaceModeButton.setAttribute("aria-pressed", String(mode === "laplace"));
+      document.getElementById("page-title").textContent = mode === "laplace" ? "Laplace practice" : "Identity practice";
+      loadCard();
     }
 
     function revealCard() {
@@ -591,6 +687,8 @@
 
     revealButton.addEventListener("click", revealCard);
     document.getElementById("next-card").addEventListener("click", loadCard);
+    identityModeButton.addEventListener("click", () => selectPracticeMode("identities"));
+    laplaceModeButton.addEventListener("click", () => selectPracticeMode("laplace"));
 
     const studyDialog = document.getElementById("study-dialog");
     const studyContent = document.getElementById("study-content");
