@@ -204,28 +204,13 @@
     .answer-math .katex-display { margin: 0; }
     .answer-caption { position: absolute; bottom: 23px; margin: 0; color: var(--muted); font-size: 12px; }
 
-    .practice-form { margin-top: 25px; }
-
-    .field-label { display: block; margin-bottom: 9px; color: var(--muted); }
-
-    .answer-row { display: flex; gap: 10px; }
-
-    .answer-input {
-      width: 100%;
-      min-width: 0;
-      height: 50px;
-      padding: 0 15px;
-      border: 1px solid var(--line);
-      border-radius: 4px;
-      outline: none;
-      color: var(--text);
-      background: #141816;
-      font-size: 14px;
-      transition: border-color 160ms ease, box-shadow 160ms ease;
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 20px;
     }
-
-    .answer-input::placeholder { color: #727c75; }
-    .answer-input:focus { border-color: #92ab63; box-shadow: 0 0 0 3px #c8f16916; }
 
     .button {
       min-height: 48px;
@@ -251,20 +236,10 @@
     .button-secondary { border-color: var(--line); color: var(--text); background: transparent; }
     .button-secondary:hover { border-color: #768078; background: #ffffff08; }
 
-    .form-bottom {
-      min-height: 47px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .feedback { min-height: 18px; margin: 12px 0 0; color: var(--muted); font-size: 12px; }
-    .feedback.is-correct { color: var(--lime); }
-    .feedback.is-incorrect { color: var(--coral); }
-
     .next-button { min-height: 38px; padding: 0 11px; font-size: 12px; }
     .next-button span { font-size: 16px; line-height: 1; }
+
+    .button:disabled { cursor: default; opacity: .7; transform: none; }
 
     footer {
       min-height: 58px;
@@ -294,9 +269,7 @@
       .intro { align-items: start; flex-direction: column; gap: 13px; margin-bottom: 18px; }
       .card-stage { height: 300px; }
       .card-face { padding: 30px 22px; }
-      .answer-row { flex-direction: column; gap: 9px; }
-      .answer-row .button { width: 100%; }
-      .form-bottom { margin-top: 2px; }
+      .card-actions { margin-top: 17px; }
       footer { min-height: 52px; font-size: 9px; }
     }
 
@@ -343,17 +316,10 @@
         </div>
       </section>
 
-      <form class="practice-form" id="answer-form">
-        <label class="field-label" for="guess">YOUR ANSWER</label>
-        <div class="answer-row">
-          <input class="answer-input" id="guess" name="guess" type="text" autocomplete="off" placeholder="Type an identity to check your recall...">
-          <button class="button button-primary" type="submit">Reveal answer</button>
-        </div>
-        <div class="form-bottom">
-          <p class="feedback" id="feedback" role="status" aria-live="polite"></p>
-          <button class="button button-secondary next-button" id="next-card" type="button">Next card <span aria-hidden="true">&#8594;</span></button>
-        </div>
-      </form>
+      <div class="card-actions" aria-label="Flashcard controls">
+        <button class="button button-primary" id="reveal-button" type="button">Reveal answer</button>
+        <button class="button button-secondary next-button" id="next-card" type="button">Next card <span aria-hidden="true">&#8594;</span></button>
+      </div>
     </main>
 
     <footer>
@@ -403,8 +369,7 @@
     const flashcard = document.getElementById("flashcard");
     const front = document.querySelector(".card-front");
     const back = document.querySelector(".card-back");
-    const guessInput = document.getElementById("guess");
-    const feedback = document.getElementById("feedback");
+    const revealButton = document.getElementById("reveal-button");
 
     function loadCard() {
       let nextIndex = Math.floor(Math.random() * identities.length);
@@ -426,36 +391,19 @@
       flashcard.classList.remove("is-revealed");
       back.setAttribute("aria-hidden", "true");
       front.setAttribute("aria-hidden", "false");
-      guessInput.value = "";
-      feedback.textContent = "";
-      feedback.className = "feedback";
+      revealButton.disabled = false;
+      revealButton.textContent = "Reveal answer";
     }
 
     function revealCard() {
-      const expected = identities[currentIndex].answer
-        .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, "($1)/($2)")
-        .replace(/\\(sin|cos|tan|sec|csc|cot)/g, "$1")
-        .replace(/[\\{}()\s]/g, "")
-        .toLowerCase();
-      const actual = guessInput.value.replace(/[\\{}()\s]/g, "").toLowerCase();
-      const isCorrect = actual.length > 0 && actual === expected;
-
       flashcard.classList.add("is-revealed");
       back.setAttribute("aria-hidden", "false");
       front.setAttribute("aria-hidden", "true");
-      feedback.textContent = isCorrect
-        ? "That matches. Nicely remembered."
-        : actual.length === 0
-          ? "Here is the identity. Try typing it on the next round."
-          : "Not quite this time. Take in the answer and try again on the next card.";
-      feedback.className = isCorrect ? "feedback is-correct" : "feedback is-incorrect";
+      revealButton.textContent = "Answer revealed";
+      revealButton.disabled = true;
     }
 
-    document.getElementById("answer-form").addEventListener("submit", (event) => {
-      event.preventDefault();
-      revealCard();
-    });
-
+    revealButton.addEventListener("click", revealCard);
     document.getElementById("next-card").addEventListener("click", loadCard);
     document.addEventListener("DOMContentLoaded", loadCard, { once: true });
   </script>
