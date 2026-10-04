@@ -604,12 +604,46 @@
       { category: "Combined functions", name: "Problem 27 · Exponential and cosine", question: String.raw`\mathcal{L}\{e^{-2t}\cos(t)\}`, answer: String.raw`F(s)=\frac{s+2}{(s+2)^2+1}` },
       { category: "Combined functions", name: "Problem 28 · Shifted cubic power", question: String.raw`\mathcal{L}\{t^3e^{-t}\}`, answer: String.raw`F(s)=\frac{6}{(s+1)^4}` },
       { category: "Periodic functions", name: "Problem 29 · Periodic pulse train", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t)=\begin{cases}1,&0\le t<1\\0,&1\le t<2\end{cases},\quad f(t+2)=f(t)`, answer: String.raw`F(s)=\frac{1-e^{-s}}{s(1-e^{-2s})}` },
-      { category: "Periodic functions", name: "Problem 30 · Integral of cosine", question: String.raw`\mathcal{L}\left\{\int_0^t \cos(3\tau)\,d\tau\right\}`, answer: String.raw`F(s)=\frac{1}{s^2+9}` }
+      { category: "Periodic functions", name: "Problem 30 · Integral of cosine", question: String.raw`\mathcal{L}\left\{\int_0^t \cos(3\tau)\,d\tau\right\}`, answer: String.raw`F(s)=\frac{1}{s^2+9}` },
+      { category: "Basic functions", name: "Problem 31 · Fifth power", question: String.raw`\mathcal{L}\{t^5\}`, answer: String.raw`F(s)=\frac{120}{s^6}` },
+      { category: "Basic functions", name: "Problem 32 · Polynomial sum", question: String.raw`\mathcal{L}\{3t^2+4t+6\}`, answer: String.raw`F(s)=\frac{6}{s^3}+\frac{4}{s^2}+\frac{6}{s}` },
+      { category: "Basic functions", name: "Problem 33 · Growing exponential", question: String.raw`\mathcal{L}\{e^{4t}\}`, answer: String.raw`F(s)=\frac{1}{s-4}` },
+      { category: "Basic functions", name: "Problem 34 · Higher-frequency sine", question: String.raw`\mathcal{L}\{\sin(7t)\}`, answer: String.raw`F(s)=\frac{7}{s^2+49}` },
+      { category: "Basic functions", name: "Problem 35 · Higher-frequency cosine", question: String.raw`\mathcal{L}\{\cos(2t)\}`, answer: String.raw`F(s)=\frac{s}{s^2+4}` },
+      { category: "Basic functions", name: "Problem 36 · Hyperbolic cosine", question: String.raw`\mathcal{L}\{\cosh(4t)\}`, answer: String.raw`F(s)=\frac{s}{s^2-16}` },
+      { category: "Shifts and products", name: "Problem 37 · Decaying exponential times sine", question: String.raw`\mathcal{L}\{e^{-2t}\sin(5t)\}`, answer: String.raw`F(s)=\frac{5}{(s+2)^2+25}` },
+      { category: "Shifts and products", name: "Problem 38 · Shifted cosine", question: String.raw`\mathcal{L}\{e^{3t}\cos(2t)\}`, answer: String.raw`F(s)=\frac{s-3}{(s-3)^2+4}` },
+      { category: "Shifts and products", name: "Problem 39 · Time squared times cosine", question: String.raw`\mathcal{L}\{t^2\cos(2t)\}`, answer: String.raw`F(s)=\frac{2s(s^2-12)}{(s^2+4)^3}` },
+      { category: "Shifts and products", name: "Problem 40 · Trigonometric quotient", question: String.raw`\mathcal{L}\left\{\frac{1-\cos(3t)}{t}\right\}`, answer: String.raw`F(s)=\frac{1}{2}\ln\left(\frac{s^2+9}{s^2}\right)` },
+      { category: "Shifts and products", name: "Problem 41 · Fourth power with shift", question: String.raw`\mathcal{L}\{t^4e^{-t}\}`, answer: String.raw`F(s)=\frac{24}{(s+1)^5}` },
+      { category: "Step and impulse functions", name: "Problem 42 · Later unit step", question: String.raw`\mathcal{L}\{u(t-3)\}`, answer: String.raw`F(s)=\frac{e^{-3s}}{s}` },
+      { category: "Step and impulse functions", name: "Problem 43 · Delayed quadratic", question: String.raw`\mathcal{L}\{(t-1)^2u(t-1)\}`, answer: String.raw`F(s)=\frac{2e^{-s}}{s^3}` },
+      { category: "Step and impulse functions", name: "Problem 44 · Delayed exponential", question: String.raw`\mathcal{L}\{u(t-2)e^{-(t-2)}\}`, answer: String.raw`F(s)=\frac{e^{-2s}}{s+1}` },
+      { category: "Step and impulse functions", name: "Problem 45 · Delayed cosine", question: String.raw`\mathcal{L}\{u(t-1)\cos(2(t-1))\}`, answer: String.raw`F(s)=\frac{se^{-s}}{s^2+4}` },
+      { category: "Step and impulse functions", name: "Problem 46 · Finite rectangular pulse", question: String.raw`\mathcal{L}\{u(t-1)-u(t-4)\}`, answer: String.raw`F(s)=\frac{e^{-s}-e^{-4s}}{s}` },
+      { category: "Step and impulse functions", name: "Problem 47 · Scaled impulse", question: String.raw`\mathcal{L}\{3\delta(t-2)\}`, answer: String.raw`F(s)=3e^{-2s}` },
+      { category: "Shifts and products", name: "Problem 48 · Time times exponential", question: String.raw`\mathcal{L}\{te^t\}`, answer: String.raw`F(s)=\frac{1}{(s-1)^2}` },
+      { category: "Shifts and products", name: "Problem 49 · Time times decaying exponential", question: String.raw`\mathcal{L}\{te^{-3t}\}`, answer: String.raw`F(s)=\frac{1}{(s+3)^2}` },
+      { category: "Shifts and products", name: "Problem 50 · Shifted quadratic", question: String.raw`\mathcal{L}\{t^2e^{2t}\}`, answer: String.raw`F(s)=\frac{2}{(s-2)^3}` },
+      { category: "Combined functions", name: "Problem 51 · Sine and cosine sum", question: String.raw`\mathcal{L}\{3\sin(5t)-2\cos(4t)\}`, answer: String.raw`F(s)=\frac{15}{s^2+25}-\frac{2s}{s^2+16}` },
+      { category: "Combined functions", name: "Problem 52 · Exponential and shifted cosine", question: String.raw`\mathcal{L}\{e^{-t}\cos(3t)+2e^{2t}\}`, answer: String.raw`F(s)=\frac{s+1}{(s+1)^2+9}+\frac{2}{s-2}` },
+      { category: "Shifts and products", name: "Problem 53 · Exponential difference over time", question: String.raw`\mathcal{L}\left\{\frac{1-e^{-2t}}{t}\right\}`, answer: String.raw`F(s)=\ln\left(\frac{s+2}{s}\right)` },
+      { category: "Periodic functions", name: "Problem 54 · Periodic ramp", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t)=t\ (0\le t<1),\quad f(t+1)=f(t)`, answer: String.raw`F(s)=\frac{1-(s+1)e^{-s}}{s^2(1-e^{-s})}` },
+      { category: "Periodic functions", name: "Problem 55 · Periodic rectangular pulse", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t)=1\ (0\le t<2),\quad f(t+4)=f(t),\quad f(t)=0\ (2\le t<4)`, answer: String.raw`F(s)=\frac{1}{s(1+e^{-2s})}` },
+      { category: "Shifts and products", name: "Problem 56 · Cosine quotient", question: String.raw`\mathcal{L}\left\{\frac{1-\cos(2t)}{t}\right\}`, answer: String.raw`F(s)=\frac{1}{2}\ln\left(\frac{s^2+4}{s^2}\right)` },
+      { category: "Shifts and products", name: "Problem 57 · Exponential quotient", question: String.raw`\mathcal{L}\left\{\frac{e^{-t}-e^{-3t}}{t}\right\}`, answer: String.raw`F(s)=\ln\left(\frac{s+3}{s+1}\right)` },
+      { category: "Shifts and products", name: "Problem 58 · Shifted quadratic power", question: String.raw`\mathcal{L}\{t^2e^{-t}\}`, answer: String.raw`F(s)=\frac{2}{(s+1)^3}` },
+      { category: "Shifts and products", name: "Problem 59 · Shifted exponential cosine", question: String.raw`\mathcal{L}\{e^{-4t}\cos(2t)\}`, answer: String.raw`F(s)=\frac{s+4}{(s+4)^2+4}` },
+      { category: "Step and impulse functions", name: "Problem 60 · Delayed cubic", question: String.raw`\mathcal{L}\{(t-1)^3u(t-1)\}`, answer: String.raw`F(s)=\frac{6e^{-s}}{s^4}` }
     ];
 
     let currentIndex = -1;
     let round = 0;
     let practiceMode = "identities";
+    const cardQueues = { identities: [], laplace: [] };
+    const cardQueueLoaded = { identities: false, laplace: false };
+    const lastCardIndices = { identities: -1, laplace: -1 };
+    const cardQueueStorageKey = "math-identity-flashcards.order.v1";
     const flashcard = document.getElementById("flashcard");
     const front = document.querySelector(".card-front");
     const back = document.querySelector(".card-back");
@@ -617,12 +651,46 @@
     const identityModeButton = document.getElementById("mode-identities");
     const laplaceModeButton = document.getElementById("mode-laplace");
 
+    function nextCardIndex(mode, deckLength) {
+      if (!cardQueueLoaded[mode]) {
+        cardQueueLoaded[mode] = true;
+        try {
+          const saved = JSON.parse(localStorage.getItem(`${cardQueueStorageKey}.${mode}`) || "null");
+          if (saved?.length === deckLength && Array.isArray(saved.remaining)) {
+            cardQueues[mode] = [...new Set(saved.remaining.filter((index) => Number.isInteger(index) && index >= 0 && index < deckLength))];
+            lastCardIndices[mode] = Number.isInteger(saved.lastIndex) ? saved.lastIndex : -1;
+          }
+        } catch {
+          cardQueues[mode] = [];
+        }
+      }
+
+      if (cardQueues[mode].length === 0) {
+        cardQueues[mode] = Array.from({ length: deckLength }, (_, index) => index);
+        for (let index = cardQueues[mode].length - 1; index > 0; index -= 1) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [cardQueues[mode][index], cardQueues[mode][swapIndex]] = [cardQueues[mode][swapIndex], cardQueues[mode][index]];
+        }
+        if (deckLength > 1 && cardQueues[mode][0] === lastCardIndices[mode]) {
+          [cardQueues[mode][0], cardQueues[mode][1]] = [cardQueues[mode][1], cardQueues[mode][0]];
+        }
+      }
+
+      const nextIndex = cardQueues[mode].shift();
+      lastCardIndices[mode] = nextIndex;
+      try {
+        localStorage.setItem(`${cardQueueStorageKey}.${mode}`, JSON.stringify({
+          length: deckLength,
+          remaining: cardQueues[mode],
+          lastIndex: nextIndex
+        }));
+      } catch {}
+      return nextIndex;
+    }
+
     function loadCard() {
       const activeDeck = practiceMode === "laplace" ? laplaceIdentities : identities;
-      let nextIndex = Math.floor(Math.random() * activeDeck.length);
-      if (activeDeck.length > 1 && nextIndex === currentIndex) {
-        nextIndex = (nextIndex + 1 + Math.floor(Math.random() * (activeDeck.length - 1))) % activeDeck.length;
-      }
+      const nextIndex = nextCardIndex(practiceMode, activeDeck.length);
       currentIndex = nextIndex;
       round += 1;
       const currentIdentity = activeDeck[currentIndex];
