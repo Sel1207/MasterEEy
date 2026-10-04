@@ -429,8 +429,8 @@
     ];
 
     const newIdentities = [
-      { category: "Pythagorean identities", question: String.raw`\sin^2(x) + \cos^2(x)`, answer: String.raw`1` },
-      { category: "Pythagorean identities", question: String.raw`1 + \tan^2(x)`, answer: String.raw`\sec^2(x)` },
+      { category: "Pythagorean identities", question: String.raw`\sec^2(x) - \tan^2(x)`, answer: String.raw`1` },
+      { category: "Pythagorean identities", question: String.raw`\csc^2(x) - \cot^2(x)`, answer: String.raw`1` },
       { category: "Pythagorean identities", question: String.raw`1 + \cot^2(x)`, answer: String.raw`\csc^2(x)` },
 
       { category: "Reciprocal and quotient identities", question: String.raw`\sec(x)`, answer: String.raw`\frac{1}{\cos(x)}` },
@@ -442,11 +442,11 @@
       { category: "Reciprocal and quotient identities", question: String.raw`\cos(x)\sec(x)`, answer: String.raw`1` },
       { category: "Reciprocal and quotient identities", question: String.raw`\tan(x)\cot(x)`, answer: String.raw`1` },
 
-      { category: "Double-angle formulas", question: String.raw`\sin(2x)`, answer: String.raw`2\sin(x)\cos(x)` },
-      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`\cos^2(x) - \sin^2(x)` },
-      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`2\cos^2(x) - 1` },
-      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`1 - 2\sin^2(x)` },
-      { category: "Double-angle formulas", question: String.raw`\tan(2x)`, answer: String.raw`\frac{2\tan(x)}{1 - \tan^2(x)}` },
+      { category: "Double-angle formulas", question: String.raw`\sin(2x)`, answer: String.raw`\frac{2\tan(x)}{1 + \tan^2(x)}` },
+      { category: "Double-angle formulas", question: String.raw`\cos(2x)`, answer: String.raw`\frac{1 - \tan^2(x)}{1 + \tan^2(x)}` },
+      { category: "Double-angle formulas", question: String.raw`\cot(2x)`, answer: String.raw`\frac{\cot^2(x) - 1}{2\cot(x)}` },
+      { category: "Double-angle formulas", question: String.raw`\sec(2x)`, answer: String.raw`\frac{\sec^2(x)}{2 - \sec^2(x)}` },
+      { category: "Double-angle formulas", question: String.raw`\csc(2x)`, answer: String.raw`\frac{1}{2\sin(x)\cos(x)}` },
 
       { category: "Half-angle formulas", question: String.raw`\sin\left(\frac{x}{2}\right)`, answer: String.raw`\pm\sqrt{\frac{1 - \cos(x)}{2}}` },
       { category: "Half-angle formulas", question: String.raw`\cos\left(\frac{x}{2}\right)`, answer: String.raw`\pm\sqrt{\frac{1 + \cos(x)}{2}}` },
