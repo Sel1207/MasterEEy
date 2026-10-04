@@ -413,7 +413,7 @@
       </section>
 
       <div class="card-actions" aria-label="Flashcard controls">
-        <button class="button button-primary" id="reveal-button" type="button">Reveal answer</button>
+            <button class="button button-primary" id="reveal-button" type="button" aria-controls="flashcard" aria-expanded="false">Reveal answer</button>
         <button class="button button-secondary next-button" id="next-card" type="button">Next card <span aria-hidden="true">&#8594;</span></button>
       </div>
     </main>
@@ -575,36 +575,36 @@
     identities.push(...newIdentities);
 
     const laplaceIdentities = [
-      { category: "Basic functions", name: "Problem 01 · Constant", question: String.raw`f(t)=1`, answer: String.raw`F(s)=\frac{1}{s}` },
-      { category: "Basic functions", name: "Problem 02 · Linear function", question: String.raw`f(t)=t`, answer: String.raw`F(s)=\frac{1}{s^2}` },
-      { category: "Basic functions", name: "Problem 03 · Power rule", question: String.raw`f(t)=t^4`, answer: String.raw`F(s)=\frac{24}{s^5}` },
-      { category: "Basic functions", name: "Problem 04 · Linearity", question: String.raw`f(t)=2t^3-5t+7`, answer: String.raw`F(s)=\frac{12}{s^4}-\frac{5}{s^2}+\frac{7}{s}` },
-      { category: "Basic functions", name: "Problem 05 · Exponential", question: String.raw`f(t)=e^{3t}`, answer: String.raw`F(s)=\frac{1}{s-3}` },
-      { category: "Basic functions", name: "Problem 06 · Decaying exponential", question: String.raw`f(t)=e^{-2t}`, answer: String.raw`F(s)=\frac{1}{s+2}` },
-      { category: "Basic functions", name: "Problem 07 · Sine", question: String.raw`f(t)=\sin(4t)`, answer: String.raw`F(s)=\frac{4}{s^2+16}` },
-      { category: "Basic functions", name: "Problem 08 · Cosine", question: String.raw`f(t)=\cos(5t)`, answer: String.raw`F(s)=\frac{s}{s^2+25}` },
-      { category: "Basic functions", name: "Problem 09 · Hyperbolic sine", question: String.raw`f(t)=\sinh(3t)`, answer: String.raw`F(s)=\frac{3}{s^2-9}` },
-      { category: "Basic functions", name: "Problem 10 · Hyperbolic cosine", question: String.raw`f(t)=\cosh(2t)`, answer: String.raw`F(s)=\frac{s}{s^2-4}` },
-      { category: "Shifts and products", name: "Problem 11 · Exponential times sine", question: String.raw`f(t)=e^{2t}\sin(3t)`, answer: String.raw`F(s)=\frac{3}{(s-2)^2+9}` },
-      { category: "Shifts and products", name: "Problem 12 · Exponential times cosine", question: String.raw`f(t)=e^{-t}\cos(4t)`, answer: String.raw`F(s)=\frac{s+1}{(s+1)^2+16}` },
-      { category: "Shifts and products", name: "Problem 13 · Time times sine", question: String.raw`f(t)=t\sin(2t)`, answer: String.raw`F(s)=\frac{4s}{(s^2+4)^2}` },
-      { category: "Shifts and products", name: "Problem 14 · Time times cosine", question: String.raw`f(t)=t\cos(3t)`, answer: String.raw`F(s)=\frac{s^2-9}{(s^2+9)^2}` },
-      { category: "Shifts and products", name: "Problem 15 · Shifted power", question: String.raw`f(t)=t^2e^{-2t}`, answer: String.raw`F(s)=\frac{2}{(s+2)^3}` },
-      { category: "Shifts and products", name: "Problem 16 · Fractional power", question: String.raw`f(t)=\sqrt{t}`, answer: String.raw`F(s)=\frac{\sqrt{\pi}}{2s^{3/2}}` },
-      { category: "Shifts and products", name: "Problem 17 · Division by time", question: String.raw`f(t)=\frac{\sin(4t)}{t}`, answer: String.raw`F(s)=\arctan\left(\frac{4}{s}\right)` },
-      { category: "Step and impulse functions", name: "Problem 18 · Delayed unit step", question: String.raw`f(t)=u(t-2)`, answer: String.raw`F(s)=\frac{e^{-2s}}{s}` },
-      { category: "Step and impulse functions", name: "Problem 19 · Delayed ramp", question: String.raw`f(t)=(t-2)u(t-2)`, answer: String.raw`F(s)=\frac{e^{-2s}}{s^2}` },
-      { category: "Step and impulse functions", name: "Problem 20 · Delayed sine", question: String.raw`f(t)=u(t-1)\sin(3(t-1))`, answer: String.raw`F(s)=\frac{3e^{-s}}{s^2+9}` },
-      { category: "Step and impulse functions", name: "Problem 21 · Rectangular pulse", question: String.raw`f(t)=u(t)-u(t-3)`, answer: String.raw`F(s)=\frac{1-e^{-3s}}{s}` },
-      { category: "Step and impulse functions", name: "Problem 22 · Shifted impulse", question: String.raw`f(t)=\delta(t-4)`, answer: String.raw`F(s)=e^{-4s}` },
-      { category: "Combined functions", name: "Problem 23 · Linearity with cosine", question: String.raw`f(t)=4e^t-3\cos(2t)`, answer: String.raw`F(s)=\frac{4}{s-1}-\frac{3s}{s^2+4}` },
-      { category: "Combined functions", name: "Problem 24 · Polynomial and exponential", question: String.raw`f(t)=t^2+e^{2t}`, answer: String.raw`F(s)=\frac{2}{s^3}+\frac{1}{s-2}` },
-      { category: "Combined functions", name: "Problem 25 · Shift and linearity", question: String.raw`f(t)=e^t\sin(2t)+\cos(t)`, answer: String.raw`F(s)=\frac{2}{(s-1)^2+4}+\frac{s}{s^2+1}` },
-      { category: "Combined functions", name: "Problem 26 · Integral in time", question: String.raw`f(t)=\int_0^t \tau^2\,d\tau`, answer: String.raw`F(s)=\frac{2}{s^4}` },
-      { category: "Combined functions", name: "Problem 27 · Second derivative", question: String.raw`f(t)=\frac{d^2}{dt^2}\left(e^{2t}\right)`, answer: String.raw`F(s)=\frac{4}{s-2}` },
-      { category: "Combined functions", name: "Problem 28 · First derivative", question: String.raw`f(t)=\frac{d}{dt}\left(t^2+3t\right)`, answer: String.raw`F(s)=\frac{2}{s^2}+\frac{3}{s}` },
-      { category: "Periodic functions", name: "Problem 29 · Periodic pulse train", question: String.raw`f(t)=\begin{cases}1,&0\le t<1\\0,&1\le t<2\end{cases},\quad f(t+2)=f(t)`, answer: String.raw`F(s)=\frac{1-e^{-s}}{s(1-e^{-2s})}` },
-      { category: "Periodic functions", name: "Problem 30 · Integral of cosine", question: String.raw`f(t)=\int_0^t \cos(3\tau)\,d\tau`, answer: String.raw`F(s)=\frac{1}{s^2+9}` }
+      { category: "Basic functions", name: "Problem 01 · Constant", question: String.raw`\mathcal{L}\{1\}`, answer: String.raw`F(s)=\frac{1}{s}` },
+      { category: "Basic functions", name: "Problem 02 · Linear function", question: String.raw`\mathcal{L}\{t\}`, answer: String.raw`F(s)=\frac{1}{s^2}` },
+      { category: "Basic functions", name: "Problem 03 · Power function", question: String.raw`\mathcal{L}\{t^4\}`, answer: String.raw`F(s)=\frac{24}{s^5}` },
+      { category: "Basic functions", name: "Problem 04 · Polynomial", question: String.raw`\mathcal{L}\{2t^3-5t+7\}`, answer: String.raw`F(s)=\frac{12}{s^4}-\frac{5}{s^2}+\frac{7}{s}` },
+      { category: "Basic functions", name: "Problem 05 · Exponential", question: String.raw`\mathcal{L}\{e^{3t}\}`, answer: String.raw`F(s)=\frac{1}{s-3}` },
+      { category: "Basic functions", name: "Problem 06 · Decaying exponential", question: String.raw`\mathcal{L}\{e^{-2t}\}`, answer: String.raw`F(s)=\frac{1}{s+2}` },
+      { category: "Basic functions", name: "Problem 07 · Sine", question: String.raw`\mathcal{L}\{\sin(4t)\}`, answer: String.raw`F(s)=\frac{4}{s^2+16}` },
+      { category: "Basic functions", name: "Problem 08 · Cosine", question: String.raw`\mathcal{L}\{\cos(5t)\}`, answer: String.raw`F(s)=\frac{s}{s^2+25}` },
+      { category: "Basic functions", name: "Problem 09 · Hyperbolic sine", question: String.raw`\mathcal{L}\{\sinh(3t)\}`, answer: String.raw`F(s)=\frac{3}{s^2-9}` },
+      { category: "Basic functions", name: "Problem 10 · Hyperbolic cosine", question: String.raw`\mathcal{L}\{\cosh(2t)\}`, answer: String.raw`F(s)=\frac{s}{s^2-4}` },
+      { category: "Shifts and products", name: "Problem 11 · Exponential times sine", question: String.raw`\mathcal{L}\{e^{2t}\sin(3t)\}`, answer: String.raw`F(s)=\frac{3}{(s-2)^2+9}` },
+      { category: "Shifts and products", name: "Problem 12 · Exponential times cosine", question: String.raw`\mathcal{L}\{e^{-t}\cos(4t)\}`, answer: String.raw`F(s)=\frac{s+1}{(s+1)^2+16}` },
+      { category: "Shifts and products", name: "Problem 13 · Time times sine", question: String.raw`\mathcal{L}\{t\sin(2t)\}`, answer: String.raw`F(s)=\frac{4s}{(s^2+4)^2}` },
+      { category: "Shifts and products", name: "Problem 14 · Time times cosine", question: String.raw`\mathcal{L}\{t\cos(3t)\}`, answer: String.raw`F(s)=\frac{s^2-9}{(s^2+9)^2}` },
+      { category: "Shifts and products", name: "Problem 15 · Shifted power", question: String.raw`\mathcal{L}\{t^2e^{-2t}\}`, answer: String.raw`F(s)=\frac{2}{(s+2)^3}` },
+      { category: "Shifts and products", name: "Problem 16 · Fractional power", question: String.raw`\mathcal{L}\{\sqrt{t}\}`, answer: String.raw`F(s)=\frac{\sqrt{\pi}}{2s^{3/2}}` },
+      { category: "Shifts and products", name: "Problem 17 · Division by time", question: String.raw`\mathcal{L}\left\{\frac{\sin(4t)}{t}\right\}`, answer: String.raw`F(s)=\arctan\left(\frac{4}{s}\right)` },
+      { category: "Step and impulse functions", name: "Problem 18 · Delayed unit step", question: String.raw`\mathcal{L}\{u(t-2)\}`, answer: String.raw`F(s)=\frac{e^{-2s}}{s}` },
+      { category: "Step and impulse functions", name: "Problem 19 · Delayed ramp", question: String.raw`\mathcal{L}\{(t-2)u(t-2)\}`, answer: String.raw`F(s)=\frac{e^{-2s}}{s^2}` },
+      { category: "Step and impulse functions", name: "Problem 20 · Delayed sine", question: String.raw`\mathcal{L}\{u(t-1)\sin(3(t-1))\}`, answer: String.raw`F(s)=\frac{3e^{-s}}{s^2+9}` },
+      { category: "Step and impulse functions", name: "Problem 21 · Rectangular pulse", question: String.raw`\mathcal{L}\{u(t)-u(t-3)\}`, answer: String.raw`F(s)=\frac{1-e^{-3s}}{s}` },
+      { category: "Step and impulse functions", name: "Problem 22 · Shifted impulse", question: String.raw`\mathcal{L}\{\delta(t-4)\}`, answer: String.raw`F(s)=e^{-4s}` },
+      { category: "Combined functions", name: "Problem 23 · Linearity with cosine", question: String.raw`\mathcal{L}\{4e^t-3\cos(2t)\}`, answer: String.raw`F(s)=\frac{4}{s-1}-\frac{3s}{s^2+4}` },
+      { category: "Combined functions", name: "Problem 24 · Polynomial and exponential", question: String.raw`\mathcal{L}\{t^2+e^{2t}\}`, answer: String.raw`F(s)=\frac{2}{s^3}+\frac{1}{s-2}` },
+      { category: "Combined functions", name: "Problem 25 · Shift and linearity", question: String.raw`\mathcal{L}\{e^t\sin(2t)+\cos(t)\}`, answer: String.raw`F(s)=\frac{2}{(s-1)^2+4}+\frac{s}{s^2+1}` },
+      { category: "Combined functions", name: "Problem 26 · Integral function", question: String.raw`\mathcal{L}\left\{\int_0^t \tau^2\,d\tau\right\}`, answer: String.raw`F(s)=\frac{2}{s^4}` },
+      { category: "Combined functions", name: "Problem 27 · Exponential and cosine", question: String.raw`\mathcal{L}\{e^{-2t}\cos(t)\}`, answer: String.raw`F(s)=\frac{s+2}{(s+2)^2+1}` },
+      { category: "Combined functions", name: "Problem 28 · Shifted cubic power", question: String.raw`\mathcal{L}\{t^3e^{-t}\}`, answer: String.raw`F(s)=\frac{6}{(s+1)^4}` },
+      { category: "Periodic functions", name: "Problem 29 · Periodic pulse train", question: String.raw`\mathcal{L}\{f(t)\},\quad f(t)=\begin{cases}1,&0\le t<1\\0,&1\le t<2\end{cases},\quad f(t+2)=f(t)`, answer: String.raw`F(s)=\frac{1-e^{-s}}{s(1-e^{-2s})}` },
+      { category: "Periodic functions", name: "Problem 30 · Integral of cosine", question: String.raw`\mathcal{L}\left\{\int_0^t \cos(3\tau)\,d\tau\right\}`, answer: String.raw`F(s)=\frac{1}{s^2+9}` }
     ];
 
     let currentIndex = -1;
@@ -647,7 +647,7 @@
       cardName.textContent = currentIdentity.name || currentIdentity.category || "";
       cardName.hidden = !cardName.textContent;
       document.getElementById("card-hint").textContent = practiceMode === "laplace"
-        ? "Find the Laplace transform of this function, then reveal to check"
+        ? "Find the transform shown, then reveal to check"
         : "Work out the right-hand side, then reveal to check";
       document.getElementById("deck-count").textContent = practiceMode === "laplace"
         ? `${laplaceIdentities.length} LAPLACE PROBLEMS`
@@ -657,6 +657,7 @@
       front.setAttribute("aria-hidden", "false");
       revealButton.disabled = false;
       revealButton.textContent = "Reveal answer";
+      revealButton.setAttribute("aria-expanded", "false");
     }
 
     function selectPracticeMode(mode) {
@@ -671,11 +672,12 @@
     }
 
     function revealCard() {
-      flashcard.classList.add("is-revealed");
-      back.setAttribute("aria-hidden", "false");
-      front.setAttribute("aria-hidden", "true");
-      revealButton.textContent = "Answer revealed";
-      revealButton.disabled = true;
+      const isRevealed = !flashcard.classList.contains("is-revealed");
+      flashcard.classList.toggle("is-revealed", isRevealed);
+      back.setAttribute("aria-hidden", String(!isRevealed));
+      front.setAttribute("aria-hidden", String(isRevealed));
+      revealButton.textContent = isRevealed ? "Hide answer" : "Reveal answer";
+      revealButton.setAttribute("aria-expanded", String(isRevealed));
     }
 
     revealButton.addEventListener("click", revealCard);
