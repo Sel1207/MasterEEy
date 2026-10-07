@@ -115,6 +115,8 @@
       margin-bottom: 24px;
     }
 
+    .intro-metrics { display: flex; align-items: flex-end; gap: 14px; }
+
     .practice-modes {
       width: fit-content;
       display: flex;
@@ -154,6 +156,11 @@
 
     .round-label { padding-bottom: 5px; color: var(--muted); white-space: nowrap; }
     .round-label span { color: var(--text); }
+    .card-timer { min-width: 78px; display: grid; justify-items: center; gap: 4px; padding: 7px 9px; border: 1px solid var(--line); border-radius: 4px; color: var(--accent); background: var(--surface); transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease; }
+    .timer-caption { color: var(--muted); font-family: var(--mono); font-size: 9px; line-height: 1; }
+    .timer-value { min-width: 5ch; font-family: var(--mono); font-size: 15px; line-height: 1; text-align: center; font-variant-numeric: tabular-nums; }
+    .card-timer.is-urgent, .card-timer.is-expired { border-color: var(--coral); color: var(--coral); background: #fff3f0; }
+    .card-timer.is-expired .timer-caption { color: var(--coral); }
 
     .card-stage {
       width: 100%;
@@ -395,7 +402,13 @@
           <p class="eyebrow">A little practice goes a long way</p>
           <h1 id="page-title">Identity practice</h1>
         </div>
-        <div class="round-label">ROUND <span id="round-count">01</span></div>
+        <div class="intro-metrics">
+          <div class="round-label">ROUND <span id="round-count">01</span></div>
+          <div class="card-timer" id="card-timer" role="timer" aria-label="2 minutes remaining">
+            <span class="timer-caption" id="timer-caption">TIME LEFT</span>
+            <time class="timer-value" id="timer-value" datetime="PT2M">02:00</time>
+          </div>
+        </div>
       </section>
 
       <div class="practice-modes" role="group" aria-label="Choose practice deck">
@@ -777,6 +790,9 @@
     let currentIndex = -1;
     let round = 0;
     let practiceMode = "identities";
+    const cardDurationSeconds = 120;
+    let cardTimerInterval = null;
+    let cardTimerDeadline = 0;
     const cardQueues = { identities: [], laplace: [] };
     const cardQueueLoaded = { identities: false, laplace: false };
     const lastCardIndices = { identities: -1, laplace: -1 };
@@ -787,6 +803,36 @@
     const revealButton = document.getElementById("reveal-button");
     const identityModeButton = document.getElementById("mode-identities");
     const laplaceModeButton = document.getElementById("mode-laplace");
+    const cardTimer = document.getElementById("card-timer");
+    const timerCaption = document.getElementById("timer-caption");
+    const timerValue = document.getElementById("timer-value");
+
+    function updateCardTimer() {
+      const remaining = Math.max(0, Math.ceil((cardTimerDeadline - Date.now()) / 1000));
+      const minutes = Math.floor(remaining / 60);
+      const seconds = remaining % 60;
+      timerValue.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+      timerValue.dateTime = `PT${remaining}S`;
+      timerCaption.textContent = remaining === 0 ? "TIME UP" : "TIME LEFT";
+      cardTimer.classList.toggle("is-urgent", remaining > 0 && remaining <= 30);
+      cardTimer.classList.toggle("is-expired", remaining === 0);
+      cardTimer.setAttribute("aria-label", remaining === 0
+        ? "Time is up"
+        : `${minutes} minutes and ${seconds} seconds remaining`);
+      return remaining;
+    }
+
+    function startCardTimer() {
+      if (cardTimerInterval !== null) window.clearInterval(cardTimerInterval);
+      cardTimerDeadline = Date.now() + cardDurationSeconds * 1000;
+      updateCardTimer();
+      cardTimerInterval = window.setInterval(() => {
+        if (updateCardTimer() === 0) {
+          window.clearInterval(cardTimerInterval);
+          cardTimerInterval = null;
+        }
+      }, 1000);
+    }
 
     function nextCardIndex(mode, deckLength) {
       if (!cardQueueLoaded[mode]) {
@@ -865,6 +911,7 @@
       revealButton.disabled = false;
       revealButton.textContent = "Reveal answer";
       revealButton.setAttribute("aria-expanded", "false");
+      startCardTimer();
     }
 
     function selectPracticeMode(mode) {
